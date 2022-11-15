@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "cross-env NODE_MODE=production nodemon -L -e ts --watch src --delay 1 --exec ts-node -r tsconfig-paths/register src/index.ts",
-    "dev": "npm run swagger & cross-env NODE_MODE=development nodemon --exec ts-node --watch src --delay 1 -r tsconfig-paths/register src/index.ts",
+    "dev": "npm run swagger & cross-env NODE_MODE=development nodemon --exec ts-node --watch src --delay 1 -r tsconfig-paths/register --files src/index.ts",
     "swagger": "swagger-cli bundle ./docs/swagger.yaml --outfile ./dist/swagger.yaml --type yaml"
   },
   "author": "",

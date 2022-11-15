@@ -12,6 +12,11 @@ export default class redisService {
     return await redisCli.set(key, value, { EX: 180 })
   }
 
+  static setWhetherCertified = async (key: string, value: any) => {
+    logger.verbose(`SET ${key}, ${value}, { EX: 3600 }`)
+    return await redisCli.set(key, value, { EX: 3600 })
+  }
+
   static setValue = async (key: any, value: any) => {
     return await redisCli.set(key, value)
   }

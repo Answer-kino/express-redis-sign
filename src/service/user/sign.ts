@@ -3,7 +3,7 @@ import DB from "src/utility/dbUtil"
 const { name: dbName } = Definition.mysql
 
 export default class SignService {
-  static signUp = async (data: ISignUp) => {
+  static signUp = async (data: any) => {
     const dml = "INSERT INTO `tbUser`"
     const model = "(`CarNumber`, `Email`, `Pwd`, `Phone`)"
     const value = "VALUES (?,?,?,?)"
@@ -12,7 +12,7 @@ export default class SignService {
     return await DB.execute(dbName, sql, [data.carNumber, data.email, data.pwd, data.phone])
   }
 
-  static signIn = async (data: ISignIn) => {
+  static signIn = async (data: any) => {
     const dql = "SELECT `Pwd`, `IDX_USER`, `CarNumber`, `Email`, `Phone`, `ProfileImg`"
     const model = "FROM `tbUser`"
     const value = "WHERE `CarNumber` = ?"

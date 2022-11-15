@@ -29,10 +29,40 @@ export default class signController {
    */
   static checkDisitCode: IController = async (req, res) => {
     try {
-      const { digitCode } = req.body
+      const { type, redisKey, digitCode } = req.body
       const { status, digitCode: curDigitCode } = req.digitCode
+      if (!status) {
+        throw new ApiError("FAIL_WHETHERCERTIFIED_CRETIFIED", StatusCodes.UNAUTHORIZED, `FAIL : The verification code has timed out.`)
+      }
 
-      ApiResponse.send(res, digitCode === curDigitCode)
+      if (digitCode === curDigitCode) {
+        const code = await redisService.getVaule(redisKey)
+        let { phone, email } = JSON.parse(code)
+
+        if (type === "phone") {
+          if (phone) {
+            throw new ApiError("FAIL_WHETHERCERTIFIED_CRETIFIED", StatusCodes.NO_CONTENT, `FAIL : Already certified.`)
+          } else {
+            phone = true
+          }
+        }
+        if (type === "email") {
+          if (email) {
+            throw new ApiError("FAIL_WHETHERCERTIFIED_CRETIFIED", StatusCodes.NO_CONTENT, `FAIL : Already certified.`)
+          } else {
+            email = true
+          }
+        }
+
+        const whetherCertified = JSON.stringify({
+          phone,
+          email,
+        })
+
+        await redisService.setWhetherCertified(redisKey, whetherCertified)
+      }
+
+      ApiResponse.result(res, StatusCodes.OK, { digitCode: digitCode === curDigitCode })
     } catch (error: any) {
       console.log(error)
       ApiError.regist(error)
@@ -53,7 +83,7 @@ export default class signController {
       const result = await SignService.signUp(userInfo)
 
       console.log(result)
-      ApiResponse.init(res)
+      ApiResponse.send(res)
     } catch (error: any) {
       console.log(error)
       ApiError.regist(error)
@@ -85,7 +115,7 @@ export default class signController {
       // redis 토큰 저장
       await redisService.setRefreshToken(rct, act)
 
-      // // token 반환
+      // token 반환
       ApiResponse.send(res, { rct, act })
     } catch (error: any) {
       console.log(error)
