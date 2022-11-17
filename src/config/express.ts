@@ -9,7 +9,7 @@ import { logger, stream } from "src/config/logger"
 import { StatusCodes } from "http-status-codes"
 
 import indexRotuer from "src/route/index"
-import signRotuer from "src/route/api/sign"
+import apiRotuer from "src/route/api/index"
 
 const app = express()
 // const origin = Config.server.mode === "development" ? Config?.front.local : Config?.front.public;
@@ -40,7 +40,7 @@ app.use(morgan("combined", { stream }))
  * Route
  */
 app.use("/", indexRotuer)
-app.use("/api/sign", signRotuer)
+app.use("/api", apiRotuer)
 
 /**
  * Swagger

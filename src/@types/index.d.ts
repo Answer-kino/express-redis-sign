@@ -1,6 +1,5 @@
-import Express, { Request } from "express"
-import { IDigitCode, IUserAuth } from "src/@interface/IGlobal"
-
+import { Request } from "express"
+import { IDigitCode, IRctInfo, IUserAuth } from "src/@interface/global/express"
 export {}
 
 declare global {
@@ -8,6 +7,7 @@ declare global {
     interface Request {
       userAuth: IUserAuth
       digitCode: IDigitCode
+      rctInfo: IRctInfo
     }
   }
 }

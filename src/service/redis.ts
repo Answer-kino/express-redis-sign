@@ -17,6 +17,16 @@ export default class redisService {
     return await redisCli.set(key, value, { EX: 3600 })
   }
 
+  static getTTL = async (key: any) => {
+    logger.verbose(`TTL ${key}`)
+    return await redisCli.ttl(key)
+  }
+
+  static setExpire = async (key: any, value: any, expire: number) => {
+    logger.verbose(`SET ${key}, ${value}, { EX: ${expire} }`)
+    return await redisCli.set(key, value, { EX: expire })
+  }
+
   static setValue = async (key: any, value: any) => {
     return await redisCli.set(key, value)
   }
